@@ -1,3 +1,10 @@
-<h1>
-  {{title}}
-</h1>
+<svg
+    width="520"
+    height="520"
+    (mousedown)="mouseDown($event)"
+    (mouseup)="mouseUp($event)"
+    (mousemove)="mouseMove($event)"
+>
+    <svg:g box *ngFor="let box of boxes" [box]="box" [selected]="box.id === currentId">
+    </svg:g>
+</svg>
