@@ -5,6 +5,6 @@
     (mouseup)="mouseUp($event)"
     (mousemove)="mouseMove($event)"
 >
-    <svg:g box *ngFor="let box of boxes" [box]="box" [selected]="box.id === currentId">
+    <svg:g box *appClearNgfor="let box of boxes" [box]="box" [selected]="box.id === currentId">
     </svg:g>
 </svg>
