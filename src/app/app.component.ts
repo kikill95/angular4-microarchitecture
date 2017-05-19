@@ -45,8 +45,6 @@ export class AppComponent {
   }
 
   updateBox(id, x, y) {
-    let box = this.boxes[id];
-    box.x = x;
-    box.y = y;
+    this.boxes[id] = { id, x, y };
   }
 }
