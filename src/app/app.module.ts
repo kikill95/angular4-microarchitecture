@@ -5,11 +5,13 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { BoxComponent } from './box/box.component';
+import { ClearNgforDirective } from './clear-ngfor.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BoxComponent
+    BoxComponent,
+    ClearNgforDirective
   ],
   imports: [
     BrowserModule,

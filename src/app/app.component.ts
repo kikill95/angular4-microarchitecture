@@ -1,15 +1,27 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ChangeDetectorRef
+} from '@angular/core';
+
+import { BoxComponent } from './box/box.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
-  currentId = null;
+export class AppComponent implements AfterViewInit {
+  currentBox: BoxComponent = null;
   boxes = [];
   offsetX;
   offsetY;
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  ngAfterViewInit() {
+    this.cdr.detach();
+  }
 
   ngOnInit() {
     for (let i = 0; i < 4200; i++) { // generate 4200 random boxes
@@ -22,18 +34,23 @@ export class AppComponent {
   }
 
   mouseDown(event) {
-    let id = Number(event.target.getAttribute('dataId'));
-    let box = this.boxes[id];
+    let boxComponent = <BoxComponent> event.target['BoxComponent'];
+
+    let box = boxComponent.box;
     this.offsetX = box.x - event.clientX;
     this.offsetY = box.y - event.clientY;
-    this.currentId = id;
+
+    this.currentBox = boxComponent;
+
+    boxComponent.selected = true;
+    boxComponent.update();
   }
 
   mouseMove(event) {
     event.preventDefault();
-    if (this.currentId !== null) {
+    if (this.currentBox !== null) {
       this.updateBox(
-        this.currentId,
+        this.currentBox,
         event.clientX + this.offsetX,
         event.clientY + this.offsetY
       );
@@ -41,12 +58,16 @@ export class AppComponent {
   }
 
   mouseUp() {
-    this.currentId = null;
+    if (this.currentBox) {
+      this.currentBox.selected = false;
+      this.currentBox.update();
+    }
+    this.currentBox = null;
   }
 
-  updateBox(id, x, y) {
-    let box = this.boxes[id];
-    box.x = x;
-    box.y = y;
+  updateBox(boxRef, x, y) {
+    boxRef.box.x = x;
+    boxRef.box.y = y;
+    boxRef.update();
   }
 }
